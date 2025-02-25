@@ -1,13 +1,14 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { db } from "@/lib/firebase";
 import axios from "axios";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
+import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
+import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
 
 export default function Home() {
   const [name, setName] = useState('');
@@ -38,36 +39,42 @@ export default function Home() {
 
   return (
     <div className="h-screen w-full bg-[#f8f8ff] flex justify-content items-center">
-      <div className="text-center w-full">
-        <p className="text-3xl font-semibold">Welcome, Are You Ready To Spice Things Up?</p>
+      <video
+        autoPlay
+        loop
+        muted
+        src="/bg-temp.mp4"
+        className="absolute object-cover w-full h-full inset-0"
+      />
 
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="mt-4">Pre-Register</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Pre-Register</DialogTitle>
-              <DialogDescription>We will let you know once we're online.</DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">Name</Label>
-                <Input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} className="col-span-3" required />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">Email</Label>
-                <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="col-span-3" required />
-              </div>
-              {message && <p className="text-center text-sm">{message}</p>}
-              <DialogFooter>
-                <Button type="submit" disabled={loading}>
-                  {loading ? "Submitting..." : "Submit"}
-                </Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
+      <div className="absolute w-full h-full bg-white opacity-50 inset-o" />
+
+      <div className="mx-auto w-1/2 opacity-100 z-10">
+        <Image src="/Day-Stay Logo.png" width={300} height={300} alt="logo" />
+        <p className="text-left mt-2 text-2xl font-semibold">
+          The finest day-use booking platform in Sri Lanka
+        </p>
+
+        <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-4 my-8">
+          <Input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} className="rounded-full placeholder:text-white" required />
+          <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="rounded-full placeholder:text-white" required />
+          <Button type="submit" className="rounded-full bg-[#db2879] hover:bg-[#db2879ef] font-medium" disabled={loading}>
+            {loading ? "Registering..." : "Join our Waitlist"}
+          </Button>
+          {/* {message && <p className="text-center text-sm">{message}</p>} */}
+        </form>
+
+        <div className="flex gap-3">
+          <Link href={"https://www.facebook.com/people/DayStaylk/61571572059968/"}>
+            <FaFacebook className="text-lg text-[#db2879]"  />
+          </Link>
+          <Link href={"https://www.instagram.com/daystay.lk/"}>
+            <FaInstagram className="text-lg text-[#db2879]" />
+          </Link>
+          <Link href={"https://www.tiktok.com/@daystay.lk"}>
+            <FaTiktok className="text-lg text-[#db2879]" />
+          </Link>
+        </div>
       </div>
     </div>
   );
