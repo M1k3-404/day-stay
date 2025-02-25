@@ -9,29 +9,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
+import { toast } from "sonner";
 
 export default function Home() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
 
     try {
       await addDoc(collection(db, "waitlist"), { name, email, timestamp: Timestamp.now() });
 
       await axios.post('/api/waitlist', { name, email });
 
-      setMessage('✅ Successfully registered! Check your email.');
+      toast('✅ Successfully registered! Check your email.');
       setName('');
       setEmail('');
     } catch (error) {
       console.error(error);
-      setMessage('❌ Something went wrong. Please try again.');
+      toast('❌ Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -61,7 +60,6 @@ export default function Home() {
           <Button type="submit" className="rounded-full bg-[#db2879] hover:bg-[#db2879ef] font-medium" disabled={loading}>
             {loading ? "Registering..." : "Join our Waitlist"}
           </Button>
-          {/* {message && <p className="text-center text-sm">{message}</p>} */}
         </form>
 
         <div className="flex gap-3">
